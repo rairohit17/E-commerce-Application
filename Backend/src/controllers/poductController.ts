@@ -22,7 +22,7 @@ import { catchBlock } from "../utils/handleErr";
 
       }
       catch(err){
-        catchBlock(res,err)
+        catchBlock(res,err,500)
       }
     }
      // add a product ---> admin 
@@ -38,7 +38,7 @@ import { catchBlock } from "../utils/handleErr";
             })
         }
         catch(err){
-            catchBlock(res,err)
+            catchBlock(res,err,500)
         }
 
     }
@@ -60,11 +60,64 @@ import { catchBlock } from "../utils/handleErr";
             }
         }
         catch(err){
-            catchBlock(res,err)
+            catchBlock(res,err,500)
          }
         
      }
 
      // update product 
 
-     export async function 
+     export async function updateProduct(req: Request, res: Response) {
+        try {
+          const id = req.params.id;
+          const product: Object = req.body;
+          const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
+      
+          if (!updatedProduct) {
+             res.status(404).json({
+              success: true,
+              msg: "Product cannot be found",
+              updatedProduct
+            });
+            return 
+          }
+      
+          res.status(200).json({
+            success: true,
+            msg: "Product updated successfully",
+            updatedProduct
+          });
+        } catch (err) {
+          catchBlock(res, err,500);
+        }
+      }
+
+     // show product 
+
+      export async function getProduct(req:Request,res:Response){
+
+        const id = req.params.id 
+        try{
+            const product= await Product.findById(id)
+            if (!product) {
+                res.status(404).json({
+                    success:true ,
+                    msg:"product cannot be found",
+                    product
+                })
+                return
+            }
+            res.status(200).json({
+                success:true,
+                msg:"product found successfuly",
+                product
+,
+                        })
+
+        }
+        catch(err){
+            catchBlock(res,err,500)
+        }
+      }
+
+    

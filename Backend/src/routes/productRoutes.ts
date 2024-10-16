@@ -1,11 +1,16 @@
 import {Router} from "express"
-import { addProduct, deleteProduct, showAllProducts } from "../controllers/poductController";
+import { addProduct, deleteProduct, getProduct, showAllProducts, updateProduct } from "../controllers/poductController";
+import { isAuthenticated, isAuthorized } from "../middlewares/auth";
 
 
- export const router =  Router();
+ export const productRouter =  Router();
 
-router.get("/products", showAllProducts)
+productRouter.get("/products",isAuthenticated,isAuthorized('admin'), showAllProducts)
 
-router.post("/product/add",addProduct)
+productRouter.post("/product/add",addProduct)
 
-router.delete("/product/:id", deleteProduct)
+productRouter.delete("/product/:id", deleteProduct)
+
+productRouter.put("/product/:id",updateProduct)
+
+productRouter.get("/product/:id",getProduct)

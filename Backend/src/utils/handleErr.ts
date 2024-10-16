@@ -1,6 +1,6 @@
 import { Response } from "express"
 
-export function catchBlock(res:Response,err:any ){
+export function catchBlock(res:Response,err:any,statusCode:number ){
     if ( err instanceof Error){
         res.status(500).json({
             success:false,
@@ -9,7 +9,7 @@ export function catchBlock(res:Response,err:any ){
         
     }
     else{
-        res.status(500).json({
+        res.status(statusCode).json({
             success:false,
             err
         })
